@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    * {
+  padding: 0;
+  margin: 0;
+}
+.fit {
+  max-width: 100%;
+  max-height: 100%;
+}
+.center {
+  display: block;
+  margin: auto;
+}
+
+.text {
+  text-align: center;
+}
+
+#map {
+cursor: src(images/download2.jpg);
+}
+
+.url {cursor: url(images/cursor-icon.png),auto;}
+    </style>
+    <title>Find the Treasure</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
+<body>
+    <img id="map" class="center fit cursor " width=100% height=85% src="images/world-background.jpg">
+<div class="text container">
+
+    <h3 id="distance">Click to start searching.</p>
+    <h3 id="clicks-remaining"></p>
+</div>
+
+    <script src="https://code.jquery.com/jquery-2.1.0.js"></script>
+   
+
+
+    <script>
+
+
+
+function set_body_height()
+{
+    var wh = $(window).height();
+    $('body').attr('style', 'height:' + wh + 'px;');
+}
+$(document).ready(function() {
+    set_body_height();
+    $(window).bind('resize', function() { set_body_height(); });
+    document.body.style.backgroundColor = "DimGrey";
+});
+
+    // Get a random number from 0 to size
+    var getRandomNumber = function (size) {
+      return Math.floor(Math.random() * size);
+    };
+
+    // Calculate distance between click event and target
+    var getDistance = function (event, target) {
+      var diffX = event.offsetX - target.x;
+      var diffY = event.offsetY - target.y;
+      return Math.sqrt((diffX * diffX) + (diffY * diffY));
+    };
+
+    // Get a string representing the distance
+    var getDistanceHint = function (distance) {
+      if (distance < 100) {
+        return "The dwarves mining in the core tell you to get out of here. It is too hot.";
+      } else if (distance < 150) {
+        return "Witches are literally drawing power from the heat radiation.";
+      } else if (distance < 230) {
+        return "The ancient gods are putting power to the sun making it hot.";
+      } else if (distance < 350) {
+        return "A common trader talks to you about how perfect the temperature is.";
+      } else if (distance < 525) {
+        return "You are offered a free jacket from the elves because it is cold.";
+      } else if (distance < 700) {
+        return "The ice wizards tell you it is really cold.";
+      } else if (distance >800) {
+        return "The yeti says go away it is too cold for him.";
+      } else {
+        return "Blizza... Sorry, froze to death.";
+      }
+    };
+
+    // Set up our variables
+    var imageuno = document.getElementById("map");
+    var width = imageuno.width;
+    var height = imageuno.height;
+    var clicks = 0;
+    var clickLimit = 30;
+
+    // Create a random target location
+    var target = {
+      x: getRandomNumber(width),
+      y: getRandomNumber(height)
+    };
+
+    // Add a click handler to the img element
+    $("#map").click(function (event) {
+      clicks++;
+
+      if (clicks > clickLimit) {
+          $("#clicks-remaining").text("");
+        myFunction();
+        $("#distance").text("You are out of gold coins to trade for travel.");
+        $("#clicks-remaining").text("Click to search again " );
+        target = {
+      x: getRandomNumber(width),
+      y: getRandomNumber(height)
+      
+    };
+    clicks = 0;
+        return;
+      }
+
+      // Get distance between click event and target
+      var distance = getDistance(event, target);
+      // Convert distance to a hint
+      var distanceHint = getDistanceHint(distance);
+
+      // Update the #distance element with the new hint
+      $("#distance").text("Hint: " + distanceHint);
+
+      // Update the #clicks-remaining element with the number of clicks remaining
+      $("#clicks-remaining").text("Amount of gold pieces left to trade: " + (clickLimit - clicks));
+
+      // If the click was close enough, tell them they won
+      if (distance < 50) {
+       setTimeout(showhide, 200)
+       setTimeout(showhide, 500)
+       setTimeout(showhide, 900)
+              $("#distance").text("You found the treasure, cool! And only in " + clicks + " trades!" );
+              $("#clicks-remaining").text("  Click to find another piece of treasure");
+    
+        target = {
+      x: getRandomNumber(width),
+      y: getRandomNumber(height)
+    };
+    clicks = 0;
+
+      }
+    });
+    function showhide() {
+var link = document.getElementById('map');
+var link2 = document.getElementById('distance');
+var link3 = document.getElementById('clicks-remaining');
+link.style.display = 'none'; 
+link2.style.display = 'none'; 
+link3.style.display = 'none'; 
+document.body.style.backgroundColor = "DarkGoldenRod";
+
+setTimeout(myFunction, 200)
+
+    }
+
+    function myFunction() {
+      var link = document.getElementById('map');
+var link2 = document.getElementById('distance');
+var link3 = document.getElementById('clicks-remaining');
+link.style.display = 'block'; 
+link2.style.display = 'block'; 
+link3.style.display = 'block'; 
+document.body.style.backgroundColor = "DimGrey";
+    }
+
+
+    </script>
+</body>
+</html>
